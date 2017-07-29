@@ -1,9 +1,7 @@
 <template>
-  <div>
+  <div class="page">
     <navHeader></navHeader>
-    <main>
-      <router-view></router-view>
-    </main>
+    <router-view class="main"></router-view>
   </div>
 </template>
 <script>
@@ -23,4 +21,16 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+
+@import '../assets/css/_common.scss';
+.page{
+  height: 100%;
+}
+.main{
+  height: calc(100% - #{$header-height});
+  overflow: hidden;
+}
+</style>
+
 

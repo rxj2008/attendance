@@ -11,11 +11,11 @@
         </h1>
         <ul class="nav">
           <li class="nav-item">
-            <router-link active-class="active" :to="`/`">考勤日历
+            <router-link active-class="active" :to="{name:'index'}">考勤日历
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link active-class="active" :to="`/s`">考勤表
+            <router-link active-class="active" :to="{name:'upload'}">考勤表
             </router-link>
           </li>
           <li class="nav-item">
@@ -69,7 +69,7 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped >
 @import '../../assets/css/_common.scss';
 .headerWrapper {
   height: $header-height;

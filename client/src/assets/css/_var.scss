@@ -1,1 +1,21 @@
-$header-height:80px
+$header-height:80px;
+
+/* table */
+
+$table-cell-padding:            .75rem !default;
+$table-sm-cell-padding:         .3rem !default;
+
+$table-bg:                      transparent !default;
+
+$table-inverse-bg:              #292b2c !default;
+$table-inverse-color:           #fff !default;
+
+$table-bg-accent:               rgba(0,0,0,.05) !default;
+$table-bg-hover:                rgba(0,0,0,.075) !default;
+$table-bg-active:               $table-bg-hover !default;
+
+$table-head-bg:                 rgb(238, 241, 246) !default;
+$table-head-color:              #464a4c !default;
+
+$table-border-width:            1px !default;
+$table-border-color:            rgb(223, 230, 236) !default;
