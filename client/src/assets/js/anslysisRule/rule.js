@@ -28,6 +28,6 @@ rule.register('preproccess', preproccess)
 rule.register('overtime', overtime)
 rule.register('reimburse', reimburse)
 
-export default function (record) {
+export function run(record) {
   return rule.run(record)
 }
