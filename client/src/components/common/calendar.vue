@@ -49,18 +49,21 @@ export default {
   },
   methods: {
     dateChange() {
-      console.log(Object.prototype.toString.apply(this.initDate))
-      console.log(this.initDate)
       let date = calendar.convertDate(this.initDate)
       this.year = date.year
       this.month = date.month
       this.getDates()
     },
-    getDates() {
+    async getDates() {
       let options = {
         justify: true
       }
       this.dates = calendar.getDates(this.year, this.month, options)
+      let holidays = await this.$store.dispatch('getCalender', { start: this.dates[0], end: this.dates[this.dates.length - 1] })
+      holidays.forEach(holiday => {
+        let date = this.dates.find(d => d.id === holiday.id)
+        Object.assign(date, holiday)
+      })
     },
     className(date) {
       return {
@@ -107,10 +110,12 @@ export default {
     }
   }
 }
+
 .date-gap {
   background: #fafafa;
   opacity: .4;
 }
+
 .weekend {
   background: #fafafa;
 }

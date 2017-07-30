@@ -6,7 +6,7 @@
       </el-date-picker>
     </h3>
     <div class="upload">
-      <div class="el-upload-dragger">
+      <div class="el-upload-dragger" @dragover="dragoverHandle" @dragleave="dragleaveHandle" @drop="dragHandle">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或
           <em @click="selectFile()">点击上传</em>
@@ -25,16 +25,15 @@ export default {
   data() {
     return {
       year: 0,
-      month: 0,
-      date: new Date()
+      month: 0
     }
   },
   computed: {
     date: {
-      get() { return new Date(this.year, this.month, 1) },
+      get() { return new Date(this.year, this.month - 1, 3) },
       set(value) {
         this.year = value.getFullYear()
-        this.month = value.getMonth()
+        this.month = value.getMonth() + 1
       }
     }
   },
@@ -49,7 +48,9 @@ export default {
     fileChange(event) {
       let files = event.target.files
       if (!files || !files.length) return
-      let file = files[0]
+      this.analysisFile(files[0])
+    },
+    analysisFile(file) {
       // 提取文件中的月份
       let monthRegex = /(\d+)月/
       if (monthRegex.test(file.name)) {
@@ -59,9 +60,28 @@ export default {
         }
       }
       analysis(file, this.year, this.month).then(() => {
-        document.querySelector('#sheet').value = ''
+        this.$router.push({name: 'list'})
+        // document.querySelector('#sheet').value = ''
       })
+    },
+    dragoverHandle(event) {
+      let oEvent = event || window.event
+      oEvent.preventDefault()
+    },
+    dragleaveHandle(event) {
+      let oEvent = event || window.event
+      oEvent.preventDefault()
+    },
+    dragHandle(event) {
+      let oEvent = event || window.event
+      let files = oEvent.dataTransfer.files
+      if (!files || !files.length) return
+      this.analysisFile(files[0])
+      oEvent.preventDefault()
     }
+  },
+  mounted() {
+    this.date = new Date()
   },
   components: { calendar }
 }

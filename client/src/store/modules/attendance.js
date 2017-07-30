@@ -1,7 +1,9 @@
 import * as types from '../mutation-types'
 
 const state = {
-  list: {}
+  list: [],
+  year: 0,
+  month: 0
 }
 
 const getters = {
@@ -38,7 +40,9 @@ const actions = {
 
 const mutations = {
   [types.ATTENDANCE_SET]: function (state, attendances) {
-    state.list = attendances
+    state.list = attendances.list
+    state.year = attendances.year
+    state.month = attendances.month
   }
 }
 

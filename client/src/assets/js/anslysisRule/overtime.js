@@ -3,7 +3,7 @@ import {
   Time,
   LeaveTimeSpan,
   OverTimeSpan
-} from '../util'
+} from '../index'
 
 // 校对上下班打卡时间
 function proofread(date, config) {

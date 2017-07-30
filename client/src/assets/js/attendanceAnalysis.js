@@ -6,10 +6,13 @@ import {
 } from './index'
 export function analysis(file, year, month) {
   let dates = calendar.getDates(year, month)
-  let task1 = store.dispatch('getCalender', {start: dates[0], end: dates[dates.length - 1]})
+  let task1 = store.dispatch('getCalender', {
+    start: dates[0],
+    end: dates[dates.length - 1]
+  })
   let task2 = excel.sheetToJson(file)
   let promise = Promise.all([task1, task2])
-  promise.then((holidays, json) => {
+  return promise.then(([holidays, json]) => {
     holidays.forEach(holiday => {
       let date = dates.find(d => d.id === holiday.id)
       Object.assign(date, holiday)
@@ -24,7 +27,11 @@ export function analysis(file, year, month) {
         }
       })
     })
-    store.dispatch('saveAttendance', data)
+    store.dispatch('saveAttendance', {
+      year,
+      month,
+      list: data
+    })
     return data
   })
 }
@@ -46,4 +53,3 @@ function convert(records, dates) {
     }
   })
 }
-

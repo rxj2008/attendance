@@ -1,7 +1,5 @@
-import util from '../util'
-const {
-  Time
-} = util
+import {Time} from '../index'
+
 export const config = {
   // 早上上班时间
   startTime: {
