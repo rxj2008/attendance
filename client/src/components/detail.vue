@@ -1,7 +1,8 @@
 <template>
   <div class="page-container">
     <h3 class="page-header">
-      <a href="javascript:history.back();">&lt; 返回</a> &emsp;&emsp;{{name}}-{{year}}年{{month}}月 考勤
+      <el-button type="primary" icon="arrow-left" @click="back">返回</el-button>
+      &emsp;{{name}}-{{year}}年{{month}}月 考勤
       <el-select v-model="type" class="type-select" clearable size="small" placeholder="请选择" @change="query">
         <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
@@ -81,6 +82,9 @@ export default {
       //   let date = this.dates.find(d => d.id === holiday.id)
       //   Object.assign(date, holiday)
       // })
+    },
+    back() {
+      window.history.back()
     },
     query() {
       switch (this.type) {
