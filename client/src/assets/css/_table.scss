@@ -1,0 +1,39 @@
+.table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  th,
+  td {
+    border-top: $table-border-width solid $table-border-color;
+  }
+  thead {
+    th,
+    td {
+      background: $table-head-bg;
+    }
+  }
+}
+
+.table-bordered {
+  border: $table-border-width solid $table-border-color;
+  th,
+  td {
+    border: $table-border-width solid $table-border-color;
+  }
+  thead {
+    th,
+    td {
+      border-bottom-width:  $table-border-width;
+    }
+  }
+}
+
+.table-striped {
+  tbody tr:nth-of-type(odd) {
+    background-color: $table-bg-accent;
+  }
+}
+
+.table-fixed {
+  table-layout: fixed;
+}

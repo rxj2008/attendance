@@ -1,0 +1,21 @@
+/* clearfix */
+
+@mixin clearfix {
+  &:after {
+    clear: both;
+    content: '.';
+    display: block;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+  }
+  *height: 1%;
+}
+
+/* 文本溢出隐藏 */
+@mixin ell() {
+    overflow: hidden;
+-ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
