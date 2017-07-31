@@ -4,14 +4,14 @@
     <header class="header" ref="header" :style="headerStyle" :class="{'header-home': isHome }">
       <div class="container">
         <h1>
-          <router-link :to="`/`">
+          <router-link :to="`/upload`">
             <!-- <img src="../../assets/images/element-logo.svg" alt="element-logo" class="nav-logo"> -->
             Excel 考勤分析
             <!-- <img src="../../assets/images/element-logo-small.svg" alt="element-logo" class="nav-logo-small"> -->
           </router-link>
         </h1>
         <ul class="nav">
-          <li class="nav-item">
+          <li v-if="false" class="nav-item">
             <router-link active-class="active" :to="{name:'index'}">考勤日历
             </router-link>
           </li>
@@ -19,7 +19,7 @@
             <router-link active-class="active" :to="{name:'upload'}">考勤表
             </router-link>
           </li>
-          <li class="nav-item">
+          <li v-if="false" class="nav-item">
             <router-link active-class="active" :to="`/a`" exact>考勤统计
             </router-link>
           </li>

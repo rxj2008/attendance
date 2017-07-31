@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <h3 class="page-header">
-      {{name}}-{{year}}年{{month}}月 考勤
+      <a href="javascript:history.back();">&lt; 返回</a> &emsp;&emsp;{{name}}-{{year}}年{{month}}月 考勤
       <el-select v-model="type" class="type-select" clearable size="small" placeholder="请选择" @change="query">
         <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
