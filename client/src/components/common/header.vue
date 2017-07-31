@@ -5,8 +5,9 @@
       <div class="container">
         <h1>
           <router-link :to="`/`">
-            <img src="../../assets/images/element-logo.svg" alt="element-logo" class="nav-logo">
-            <img src="../../assets/images/element-logo-small.svg" alt="element-logo" class="nav-logo-small">
+            <!-- <img src="../../assets/images/element-logo.svg" alt="element-logo" class="nav-logo"> -->
+            Excel 考勤分析
+            <!-- <img src="../../assets/images/element-logo-small.svg" alt="element-logo" class="nav-logo-small"> -->
           </router-link>
         </h1>
         <ul class="nav">
