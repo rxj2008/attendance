@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <navHeader></navHeader>
-    <router-view class="main"></router-view>
+    <router-view  class="main"></router-view>
   </div>
 </template>
 <script>
@@ -22,12 +22,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
 @import '../assets/css/_common.scss';
-.page{
+.page {
   height: 100%;
 }
-.main{
+
+.main {
   height: calc(100% - #{$header-height});
   overflow: hidden;
 }

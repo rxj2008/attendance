@@ -13,7 +13,7 @@ class TimeSpan {
     }
   }
   toString() {
-    return `${this.startTime.toString()}--${this.endTime.toString()}|${this.time.toString()}`
+    return `${this.startTime.toString()}--${this.endTime.toString()}|${this.time.totalHours}`
   }
 }
 

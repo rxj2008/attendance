@@ -4,7 +4,7 @@
       {{year}}年{{month}}月 打卡记录表
     </h3>
     <div class="list">
-      <el-table :data="attendances" border stripe>
+      <el-table :data="attendances" border stripe height="el-table">
         <el-table-column prop="name" fixed label="姓名" width="100">
           <template scope="scope">
             <router-link :to="{name:'detail', params:{name:scope.row.name}}">{{scope.row.name}}</router-link>
@@ -49,6 +49,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.list{
+  height: calc(100% - 65px)
+}
+.el-table{
+  height: 100%;
+}
 .clocktime {
   display: block;
   margin: 4px 0;
