@@ -8,7 +8,7 @@
       </el-select>
     </h3>
     <div class="list">
-      <el-table :data="attendances" border stripe fit height="el-table">
+      <el-table :data="attendances" sum-text="合计" :summary-method="getSummaries" show-summary border stripe fit height="el-table">
         <el-table-column fixed label="日期" width="100">
           <template scope="scope">
             {{scope.row.month}}-{{scope.row.date|padLeft(2)}}
@@ -46,7 +46,7 @@
         </el-table-column>
         <el-table-column label="备注" prop="message" v-if="columns.exception">
           <template scope="scope">
-              {{scope.row.message}}
+            {{scope.row.message}}
           </template>
         </el-table-column>
       </el-table>
@@ -125,6 +125,38 @@ export default {
       this.columns.leave = !!(type & LEAVE)
       this.columns.reimburse = !!(type & REIMBURSE)
       this.columns.exception = !!(type & EXCEPTION)
+    },
+    getSummaries(param) {
+      const { columns, data } = param
+      let summary = { leave: 0, overtime: 0, reimburse: 0 }
+      data.forEach(item => {
+        item.leaves.forEach(leave => {
+          summary.leave += leave.time.totalHours
+        })
+        item.overtimes.forEach(overtime => {
+          summary.overtime += overtime.time.totalHours
+        })
+        item.reimburses.forEach(reimburse => {
+          summary.reimburse += reimburse.money
+        })
+      })
+      return columns.map(col => {
+        console.log(col.label)
+        switch (col.label) {
+          case '日期':
+            return '合计'
+          case '请假':
+            return summary.leave
+          case '加班':
+            return summary.overtime
+          case '报销':
+            return summary.reimburse
+          default:
+            return 'N/A'
+        }
+      })
+      // console.log(JSON.stringify(columns))
+      // console.log(JSON.stringify(data))
     }
   },
   mounted() {
