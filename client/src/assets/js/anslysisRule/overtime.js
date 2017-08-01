@@ -5,31 +5,51 @@ import {
   OverTimeSpan
 } from '../index'
 
+let startTime
+let endTime
+
 // 校对上下班打卡时间
 function proofread(date, config) {
-  let [startTime, endTime] = date.clocktimes
-  if (startTime < config.startTime.earliest) {
-    // 如果早上打卡时间早于公司弹性上班最早时间，
-    // 打卡时间设置为公司弹性上班最早时间
-    startTime = new Time(config.startTime.earliest)
-  } else if (startTime < config.lunchBreak.end &&
-    startTime >= config.lunchBreak.start
-  ) {
-    // 如果上班打卡时间是午休时间，打卡时间设置为午休结束时间
-    startTime = new Time(config.lunchBreak.end)
+  startTime = null
+  endTime = null
+  if (date.clocktimes.length === 1) {
+    date.exception = true
+    date.message = '只有一次打卡记录'
+  } else if (date.clocktimes.length >= 2) {
+    startTime = date.clocktimes[0]
+    endTime = date.clocktimes[date.clocktimes.length - 1]
+    if (endTime <= config.startTime.earliest) {
+      date.exception = true
+      date.message = '打卡异常'
+      return
+    }
+    if (startTime >= config.endTime.earliest) {
+      date.exception = true
+      date.message = '打卡异常'
+      return
+    }
+    if (startTime < config.startTime.earliest) {
+      // 如果早上打卡时间早于公司弹性上班最早时间，
+      // 打卡时间设置为公司弹性上班最早时间
+      startTime = new Time(config.startTime.earliest)
+    } else if (startTime < config.lunchBreak.end &&
+      startTime >= config.lunchBreak.start
+    ) {
+      // 如果上班打卡时间是午休时间，打卡时间设置为午休结束时间
+      startTime = new Time(config.lunchBreak.end)
+    }
+    if (endTime <= config.lunchBreak.end &&
+      endTime > config.lunchBreak.start
+    ) {
+      // 如果下班打卡时间是午休时间，打卡时间设置为午休开始时间
+      endTime = new Time(config.lunchBreak.start)
+    }
   }
-  if (endTime <= config.lunchBreak.end &&
-    endTime > config.lunchBreak.start
-  ) {
-    // 如果下班打卡时间是午休时间，打卡时间设置为午休开始时间
-    endTime = new Time(config.lunchBreak.start)
-  }
-  date.clocktimes = [startTime, endTime]
 }
 
 // 计算工作时长
 function computeWorkingTime(date, config) {
-  let [startTime, endTime] = date.clocktimes
+  if (!startTime || !endTime) return
   let workingTime = endTime.subtract(startTime)
   if (startTime <= config.lunchBreak.start && endTime >= config.lunchBreak.end) {
     workingTime = workingTime.subtract(config.lunchBreak.time)
@@ -39,7 +59,7 @@ function computeWorkingTime(date, config) {
 
 // 一般情况：早上打卡正常
 function computerOvertimeWithNormal(date, config) {
-  let [startTime, endTime] = date.clocktimes
+  if (!startTime || !endTime) return
 
   if (startTime >= config.startTime.earliest &&
     startTime <= config.startTime.latest) {
@@ -56,7 +76,7 @@ function computerOvertimeWithNormal(date, config) {
 
 // 迟到情况：早上迟到
 function computerOvertimeWithEarly(date, config) {
-  let [startTime, endTime] = date.clocktimes
+  if (!startTime || !endTime) return
 
   if (startTime > config.startTime.latest) {
     if (endTime >= config.endTime.earliest &&
@@ -85,11 +105,8 @@ function computerOvertimeWithEarly(date, config) {
 }
 
 function workdayOvertime(date, config) {
-  if (!date.clocktimes || !date.clocktimes.length) {
+  if (!startTime && !endTime) {
     date.leaves.push(new LeaveTimeSpan(config.startTime.earliest, config.endTime.earliest))
-  } else if (date.clocktimes.length === 1) {
-    date.exception = true
-    date.message = '只有一次打卡记录'
   } else {
     computerOvertimeWithNormal(date, config)
     computerOvertimeWithEarly(date, config)
@@ -97,14 +114,10 @@ function workdayOvertime(date, config) {
 }
 
 function holidayOvertime(date, config) {
-  if (date.clocktimes.length === 1) {
-    date.exception = true
-    date.message = '只有一次打卡记录'
-  } else if (date.clocktimes.length === 2) {
-    let [startTime, endTime] = date.clocktimes
-    if (date.workingTime >= config.overtime.min) {
-      date.overtimes.push(new OverTimeSpan(startTime, endTime))
-    }
+  if (!startTime || !endTime) return
+
+  if (date.workingTime >= config.overtime.min) {
+    date.overtimes.push(new OverTimeSpan(startTime, endTime))
   }
 }
 
@@ -113,15 +126,15 @@ export default function (record) {
     leaves: [],
     overtimes: []
   })
-  if (record.clocktimes.length >= 2) {
-    proofread(record, config)
+  proofread(record, config)
+  if (!record.exception) {
     computeWorkingTime(record, config)
+    if (record.isWorkday) {
+      workdayOvertime(record, config)
+    } else {
+      holidayOvertime(record, config)
+    }
   }
 
-  if (record.isWorkday) {
-    workdayOvertime(record, config)
-  } else {
-    holidayOvertime(record, config)
-  }
   return record
 }

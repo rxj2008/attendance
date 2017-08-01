@@ -12,8 +12,10 @@
         </el-table-column>
         <el-table-column :label="date.month+'-'+date.date" v-for="(date,i) in dates" :key="date.date">
           <template scope="scope">
-            <span class="clocktime" v-for="time in scope.row.dates[i].clocktimes" :key="time.valueOf()">
+            <span class="item" v-for="(time, idx) in scope.row.dates[i].clocktimes" :key="time.valueOf()">
+              <template v-if="idx===0 || idx=== (scope.row.dates[i].clocktimes.length-1)">
               {{time.toString()}}
+              </template>
             </span>
           </template>
         </el-table-column>
@@ -55,7 +57,7 @@ export default {
 .el-table{
   height: 100%;
 }
-.clocktime {
+.item {
   display: block;
   margin: 4px 0;
 }
