@@ -8,13 +8,14 @@
       </el-select>
     </h3>
     <div class="list">
-      <el-table :data="attendances" sum-text="合计" :summary-method="getSummaries" show-summary border stripe fit height="el-table">
-        <el-table-column fixed label="日期" width="100">
+      <el-table :data="attendances" sum-text="合计" :summary-method="getSummaries"
+      show-summary border fit height="el-table" :row-style="setRowClass">
+        <el-table-column fixed label="日期" width="150">
           <template scope="scope">
             {{scope.row.month}}-{{scope.row.date|padLeft(2)}}
           </template>
         </el-table-column>
-        <el-table-column label="打卡记录" width="150">
+        <el-table-column label="打卡记录" width="180">
           <template scope="scope">
             <span class="item" v-for="(time, idx) in scope.row.clocktimes" :key="time.valueOf()">
               <template v-if="idx===0 || idx=== (scope.row.clocktimes.length-1)">
@@ -141,7 +142,6 @@ export default {
         })
       })
       return columns.map(col => {
-        console.log(col.label)
         switch (col.label) {
           case '日期':
             return '合计'
@@ -155,8 +155,10 @@ export default {
             return 'N/A'
         }
       })
-      // console.log(JSON.stringify(columns))
-      // console.log(JSON.stringify(data))
+    },
+    setRowClass(data) {
+      return data.isWorkday ? '' : 'background:rgba(29, 144, 230, 0.50);'
+      // return data.isWorkday ? '' : 'holiday'
     }
   },
   mounted() {
@@ -186,6 +188,11 @@ export default {
 .item {
   display: block;
   margin: 4px 0;
+}
+
+.holiday {
+  color:#0ff;
+  background: #ff0;
 }
 </style>
 

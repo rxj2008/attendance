@@ -15,7 +15,7 @@ export default new Router({
     name: 'layout',
     component: Layout,
     children: [{
-      path: '/index',
+      path: 'index',
       name: 'index',
       component: Index
     },
