@@ -9,15 +9,22 @@ import Detail from '@/components/detail'
 
 Vue.use(Router)
 
+Router.prototype.goBack = function () {
+  this.isBack = true
+  window.history.go(-1)
+}
+
 export default new Router({
   routes: [{
     path: '/',
     name: 'layout',
     component: Layout,
+    redirect: '/upload',
     children: [{
       path: 'index',
       name: 'index',
-      component: Index
+      component: Index,
+      beforeEnter: beforeEnter
     },
     {
       path: 'upload',
