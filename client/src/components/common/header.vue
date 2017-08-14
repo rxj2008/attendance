@@ -78,6 +78,7 @@ export default {
 
 .header {
   height: $header-height;
+  box-shadow: 0 1px 10px #000;
   background-color: rgba(32, 160, 255, 1);
   color: #fff;
   top: 0;

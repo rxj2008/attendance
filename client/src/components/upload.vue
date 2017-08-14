@@ -6,7 +6,7 @@
       </el-date-picker>
     </h3>
     <div class="upload">
-      <div class="el-upload-dragger" @dragover="dragoverHandle" @dragleave="dragleaveHandle" @drop="dragHandle">
+      <div class="el-upload-dragger" @dragover="dragoverHandle" @dragleave="dragleaveHandle" @drop="dragHandle" :class="dragoverStyle?'dragoverHandleStyle':''">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或
           <em @click="selectFile()">点击上传</em>
@@ -25,7 +25,8 @@ export default {
   data() {
     return {
       year: 0,
-      month: 0
+      month: 0,
+      dragoverStyle: false
     }
   },
   computed: {
@@ -67,10 +68,12 @@ export default {
     dragoverHandle(event) {
       let oEvent = event || window.event
       oEvent.preventDefault()
+      this.dragoverStyle = true
     },
     dragleaveHandle(event) {
       let oEvent = event || window.event
       oEvent.preventDefault()
+      this.dragoverStyle = false
     },
     dragHandle(event) {
       let oEvent = event || window.event
@@ -94,6 +97,17 @@ export default {
 
 .upload {
   height: 250px;
+}
+
+.el-upload-dragger{
+  border: 2px dashed #ececea;
+  transition: all .4s;
+}
+
+.dragoverHandleStyle,.el-upload-dragger:hover{
+  border: 2px dashed #f5da6e;
+  transition: all .4s;
+  background-color: #f3faff;
 }
 
 .el-upload-dragger {

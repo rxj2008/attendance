@@ -19,4 +19,28 @@ html, body, #app{
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+.page-container{
+  position:relative;
+  animation:mymove .6s ease;
+  -webkit-animation:mymove .6s ease;
+  -o-animation:mymove .6s ease;
+}
+@keyframes mymove
+{
+  from {top:-30px;}
+  to {top:0px;}
+}
+
+@-webkit-keyframes mymove
+{
+  from {top:-30px;}
+  to {top:0px;}
+}
+
+@-o-keyframes mymove
+{
+  from {top:-30px;}
+  to {top:0px;}
+}
+
 </style>
