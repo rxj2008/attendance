@@ -25,8 +25,8 @@
   </div>
 </template>
 <script>
-import { calendar } from '../assets/js'
-import myxlsx from '../assets/js/Myexcel'
+import { calendar, exportExcel} from '../assets/js'
+// import myxlsx from '../assets/js/Myexcel'
 export default {
   name: 'list',
   data() {
@@ -47,8 +47,9 @@ export default {
       })
     },
     createExcel: function() {
+      exportExcel(this.attendances)
       // myxlsx.createExcelFun();
-      myxlsx.createExcelFun()
+      // myxlsx.createExcelFun()
     }
   },
   mounted() {
