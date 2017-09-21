@@ -11,7 +11,7 @@ function mealFee(record) {
     // 工作日
 
     if (startTime <= config.startTime.latest && endTime >= new Time(20, 0)) {
-      record.reimburses.push(new Reimburse(20, '餐费', [new Time(12, 0)]))
+      record.reimburses.push(new Reimburse(20, '餐费', [new Time(20, 0)]))
     }
   } else {
     // 节假日
