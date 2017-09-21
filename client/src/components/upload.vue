@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <h3 class="page-header">
+    <h3 v-if="false" class="page-header">
       考勤月份：
       <el-date-picker v-model="date" type="month" placeholder="选择月" format="yyyy-MM" @change="dateChange">
       </el-date-picker>
