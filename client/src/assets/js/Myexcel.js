@@ -1,33 +1,8 @@
+// 导出excel表
 import XLSX from 'xlsx'
-import '../../../static/js/Blob.js'
-import saveAs from '../../../static/js/FileSaver.js'
+import '../../assets/js/Blob.js'
+import saveAs from '../../assets/js/FileSaver.js'
 
-function sheetToJson(file, sheetIndex = 0) {
-  let promise = new Promise((resolve, reject) => {
-    try {
-      let reader = new FileReader()
-      reader.onload = (e) => {
-        let bytes = new Uint8Array(e.target.result)
-        let binary = []
-        let length = bytes.byteLength
-        for (let i = 0; i < length; i++) {
-          binary.push(String.fromCharCode(bytes[i]))
-        }
-        let workbook = XLSX.read(binary.join(''), {
-          type: 'binary'
-        })
-        let sheetName = workbook.SheetNames[sheetIndex]
-        let sheet = workbook.Sheets[sheetName]
-        let content = XLSX.utils.sheet_to_json(sheet)
-        resolve(content)
-      }
-      reader.readAsArrayBuffer(file)
-    } catch (e) {
-      reject(e)
-    }
-  })
-  return promise
-}
 function datenum(v, date1904) {
   if (date1904) v += 1462
   var epoch = Date.parse(v)
@@ -85,7 +60,7 @@ function s2ab(s) {
   for (var i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF
   return buf
 }
-function exportExcel(name, sheets) {
+export function exportExcel(name, sheets) {
   var workBook = new Workbook()
   sheets.forEach(sheet => {
     let ws = buildSheet(sheet.data)
@@ -96,7 +71,4 @@ function exportExcel(name, sheets) {
 
   saveAs(new Blob([s2ab(wbout)], {type: 'application/octet-stream'}), `${name}.xlsx`)
 }
-export const excel = {
-  sheetToJson,
-  export: exportExcel
-}
+

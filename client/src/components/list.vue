@@ -1,8 +1,9 @@
 <template>
   <div class="page-container">
-    <h3 class="page-header">
+    <h3 class="page-header fl">
       {{year}}年{{month}}月 打卡记录表
     </h3>
+    <el-button class="fr" v-on:click="createExcel">生成Excel表</el-button>
     <div class="list">
       <el-table :data="attendances" border stripe height="el-table">
         <el-table-column prop="name" fixed label="姓名" width="100">
@@ -24,7 +25,8 @@
   </div>
 </template>
 <script>
-import { calendar } from '../assets/js'
+import { calendar, exportExcel} from '../assets/js'
+// import myxlsx from '../assets/js/Myexcel'
 export default {
   name: 'list',
   data() {
@@ -43,6 +45,11 @@ export default {
         let date = this.dates.find(d => d.id === holiday.id)
         Object.assign(date, holiday)
       })
+    },
+    createExcel: function() {
+      exportExcel(this.attendances)
+      // myxlsx.createExcelFun();
+      // myxlsx.createExcelFun()
     }
   },
   mounted() {
@@ -51,6 +58,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.fl{
+  float: left
+}
+.fr{
+  float: right
+}
+.el-button{
+  margin-top:15px;
+}
 .list{
   height: calc(100% - 65px)
 }
@@ -60,6 +76,11 @@ export default {
 .item {
   display: block;
   margin: 4px 0;
+}
+
+.el-table .cell a{
+  color: #2c3e50;
+  text-decoration: none;
 }
 </style>
 

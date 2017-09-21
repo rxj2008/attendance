@@ -29,3 +29,4 @@ export {
 } from './anslysisRule/modules'
 
 export {run} from './anslysisRule/rule'
+export {exportExcel} from './exportExcel'
