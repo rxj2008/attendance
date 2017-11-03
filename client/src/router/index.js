@@ -6,6 +6,7 @@ import Index from '@/components/index'
 import Upload from '@/components/upload'
 import List from '@/components/list'
 import Detail from '@/components/detail'
+import Statis from '@/components/statis'
 
 Vue.use(Router)
 
@@ -41,6 +42,12 @@ export default new Router({
       path: 'detail/:name',
       name: 'detail',
       component: Detail,
+      beforeEnter: beforeEnter
+    },
+    {
+      path: 'statis',
+      name: 'statis',
+      component: Statis,
       beforeEnter: beforeEnter
     }
     ]

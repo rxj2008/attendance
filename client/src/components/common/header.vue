@@ -10,17 +10,21 @@
             <!-- <img src="../../assets/images/element-logo-small.svg" alt="element-logo" class="nav-logo-small"> -->
           </router-link>
         </h1>
-        <ul v-if="false" class="nav">
-          <li  class="nav-item">
+        <ul class="nav">
+          <li v-if="false"  class="nav-item">
             <router-link active-class="active" :to="{name:'index'}">考勤日历
             </router-link>
           </li>
-          <li  class="nav-item">
+          <li v-if="!this.$store.state.attendance.list.length>0" class="nav-item">
             <router-link active-class="active" :to="{name:'upload'}">考勤表
             </router-link>
           </li>
-          <li  class="nav-item">
-            <router-link active-class="active" :to="`/a`" exact>考勤统计
+          <li v-if="this.$store.state.attendance.list.length>0" class="nav-item">
+            <router-link active-class="active" :to="{name:'list'}">考勤表
+            </router-link>
+          </li>
+          <li v-if="this.$store.state.attendance.list.length>0" class="nav-item">
+            <router-link active-class="active" :to="{name:'statis'}" >考勤统计
             </router-link>
           </li>
         </ul>
@@ -34,6 +38,7 @@ export default {
     return {
       active: '',
       isHome: false,
+      isInitData:this.$store.state.attendance.list&&this.$store.state.attendance.list.length>0,
       headerStyle: {}
     }
   },

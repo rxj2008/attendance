@@ -2,7 +2,7 @@
   "name": "attendance-client",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "musishui <rxj_2008@foxmail.com>",
+  "author": "jusfoun-fe.github.io",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -15,6 +15,7 @@
     "element-ui": "^1.4.0",
     "moment": "^2.18.1",
     "vue": "^2.3.3",
+    "echarts": "^3.7.2",
     "vue-router": "^2.6.0",
     "vuex": "^2.3.1",
     "xlsx": "^0.10.9"
