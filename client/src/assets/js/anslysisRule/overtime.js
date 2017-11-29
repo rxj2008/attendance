@@ -1,8 +1,8 @@
 import {
-  config,
-  Time,
-  LeaveTimeSpan,
-  OverTimeSpan
+    config,
+    Time,
+    LeaveTimeSpan,
+    OverTimeSpan
 } from '../index'
 
 let startTime
@@ -29,19 +29,19 @@ function proofread(date, config) {
       return
     }
     if (startTime < config.startTime.earliest) {
-      // 如果早上打卡时间早于公司弹性上班最早时间，
-      // 打卡时间设置为公司弹性上班最早时间
+            // 如果早上打卡时间早于公司弹性上班最早时间，
+            // 打卡时间设置为公司弹性上班最早时间
       startTime = new Time(config.startTime.earliest)
     } else if (startTime < config.lunchBreak.end &&
-      startTime >= config.lunchBreak.start
-    ) {
-      // 如果上班打卡时间是午休时间，打卡时间设置为午休结束时间
+            startTime >= config.lunchBreak.start
+        ) {
+            // 如果上班打卡时间是午休时间，打卡时间设置为午休结束时间
       startTime = new Time(config.lunchBreak.end)
     }
     if (endTime <= config.lunchBreak.end &&
-      endTime > config.lunchBreak.start
-    ) {
-      // 如果下班打卡时间是午休时间，打卡时间设置为午休开始时间
+            endTime > config.lunchBreak.start
+        ) {
+            // 如果下班打卡时间是午休时间，打卡时间设置为午休开始时间
       endTime = new Time(config.lunchBreak.start)
     }
   }
@@ -62,13 +62,13 @@ function computerOvertimeWithNormal(date, config) {
   if (!startTime || !endTime) return
 
   if (startTime >= config.startTime.earliest &&
-    startTime <= config.startTime.latest) {
-    // 晚加班
+        startTime <= config.startTime.latest) {
+        // 晚加班
     let start = startTime.add(config.workingTime).add(config.lunchBreak.time)
     if (date.workingTime >= config.workingTime + config.overtime.min) {
       date.overtimes.push(new OverTimeSpan(start, endTime))
     } else if (date.workingTime < config.workingTime) {
-      // 早退请假
+            // 早退请假
       date.leaves.push(new LeaveTimeSpan(endTime, start))
     }
   }
@@ -80,13 +80,25 @@ function computerOvertimeWithEarly(date, config) {
 
   if (startTime > config.startTime.latest) {
     if (endTime >= config.endTime.earliest &&
-      endTime <= config.endTime.latest) {
-      // 正常下班
-      let start = endTime.subtract(config.workingTime)
-        .subtract(config.lunchBreak.time)
+            endTime <= config.endTime.latest) {
+            // 正常下班
+      let start = endTime.subtract(config.workingTime).subtract(config.lunchBreak.time)
       date.leaves.push(new LeaveTimeSpan(start, startTime))
+    } else if (endTime > config.endTime.latest) {
+      if (date.workingTime >= config.workingTime) {
+        let step1 = (startTime.subtract(config.startTime.earliest).totalMinutes - config.leave.min) / config.leave.step
+        let step2 = (startTime.subtract(config.startTime.latest).totalMinutes - config.leave.min) / config.leave.step
+        let start = config.startTime.earliest
+        if (step2 > 0 && Math.ceil(step1) > Math.ceil(step2)) {
+          start = config.startTime.latest
+        }
+        date.leaves.push(new LeaveTimeSpan(start, startTime))
+        date.overtimes.push(new OverTimeSpan(start.add(config.workingTime).add(config.lunchBreak.time), endTime))
+      } else {
+        date.leaves.push(new LeaveTimeSpan(config.startTime.latest, startTime))
+      }
     } else {
-      // 早退
+            // 早退
       let time = startTime.subtract(config.startTime.earliest)
 
       if (startTime >= config.lunchBreak.end) {
