@@ -4,12 +4,12 @@ export const config = {
   // 早上上班时间
   startTime: {
     earliest: new Time(8, 30),
-    latest: new Time(9, 30)
+    latest: new Time(9, 0)
   },
   // 晚上下班时间
   endTime: {
     earliest: new Time(18, 0),
-    latest: new Time(19, 0)
+    latest: new Time(18, 30)
   },
   workingTime: 8 * 60,
   // 午休
