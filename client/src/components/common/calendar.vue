@@ -53,6 +53,7 @@ export default {
       this.year = date.year
       this.month = date.month
       this.getDates()
+      this.currDate = date
     },
     async getDates() {
       let options = {
@@ -71,7 +72,7 @@ export default {
         weekend: date.isWeekend,
         holiday: !date.isWeekend && !date.isWorkday,
         workday: date.isWeekend && date.isWorkday,
-        current: date === this.currDate
+        current: date.id === this.currDate.id
       }
     },
     clickDate() { }
